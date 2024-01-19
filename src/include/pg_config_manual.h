@@ -403,7 +403,7 @@
 #endif
 #define _MIGRATE_ 0
 #define _SHARDING_
-#define __AUDIT__ 0
+//#define __AUDIT__ 0
 #define _MLS_ 0
 #define __AUDIT_FGA__ 0
 #define __STORAGE_SCALABLE__ 0
