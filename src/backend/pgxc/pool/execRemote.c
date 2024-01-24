@@ -114,7 +114,7 @@ struct find_params_context
  * Buffer size does not affect performance significantly, just do not allow
  * connection buffer grows infinitely
  */
-#define COPY_BUFFER_SIZE 8192
+#define COPY_BUFFER_SIZE 8192 * 16
 #define PRIMARY_NODE_WRITEAHEAD 1024 * 1024
 
 /*
