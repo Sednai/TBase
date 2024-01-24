@@ -320,10 +320,10 @@ static pid_t StartupPID = 0,
             GTMProxyPID = 0,
             BouncerPid = 0,
 #endif
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
             AuditLoggerPID = 0,
 #endif
-#ifdef __AUDIT_FGA__
+#ifdef __AUDIT_FGAXZ__
             AuditFgaBgworkerPID = 0,
 #endif
 
@@ -1143,12 +1143,12 @@ PostmasterMain(int argc, char *argv[])
      * background worker slots.
      */
     ApplyLauncherRegister();
-
+#ifdef __AUDIT_FGAXZ__
     /*
         * Register Audit FGA worker
         */
     ApplyAuditFgaRegister();
-
+#endif
     /*
      * process any libraries that should be preloaded at postmaster start
      */
@@ -1424,7 +1424,7 @@ PostmasterMain(int argc, char *argv[])
     g_postmaster_timeout_id = RegisterTimeout(USER_TIMEOUT, PostmasterLogTimeoutHandler);    
 #endif
 
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
     /*
      * Make some init for audit before start backend
      */
@@ -1977,7 +1977,7 @@ ServerLoop(void)
         if (SysLoggerPID == 0 && Logging_collector)
             SysLoggerPID = SysLogger_Start();
 
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
         if (AuditLoggerPID == 0)
         {
             if (pmState == PM_RUN || pmState == PM_HOT_STANDBY)
@@ -2879,7 +2879,7 @@ SIGHUP_handler(SIGNAL_ARGS)
             signal_child(SysLoggerPID, SIGHUP);
         if (PgStatPID != 0)
             signal_child(PgStatPID, SIGHUP);
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
         if (AuditLoggerPID != 0)
             signal_child(AuditLoggerPID, SIGHUP);
 #endif
@@ -2996,7 +2996,7 @@ pmdie(SIGNAL_ARGS)
                      signal_child(ClusterMonPID, SIGTERM);
 #endif
 
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
                 if (AuditLoggerPID != 0)
                 {
                     int audit_sig = SIGTERM;
@@ -3072,7 +3072,7 @@ pmdie(SIGNAL_ARGS)
                 signal_child(ClusterMonPID, SIGTERM);
 #endif /* XCP */
 
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
             if (AuditLoggerPID != 0)
             {
                 int audit_sig = SIGINT;
@@ -3307,7 +3307,7 @@ reaper(SIGNAL_ARGS)
                 ClusterMonPID = StartClusterMonitor();
 #endif
 
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
             /* Was it the audit logger?  If so, try to start a new one */
             if (AuditLoggerPID == 0)
             {
@@ -3512,7 +3512,7 @@ reaper(SIGNAL_ARGS)
             continue;
         }
 
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
         /* Was it the audit logger?  If so, try to start a new one */
         if (pid == AuditLoggerPID)
         {    
@@ -4076,7 +4076,7 @@ HandleChildCrash(int pid, int exitstatus, const char *procname)
     }
 #endif
 
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
     /* Take care of the audit logger too */
     if (pid == AuditLoggerPID)
         AuditLoggerPID = 0;
@@ -4277,7 +4277,7 @@ PostmasterStateMachine(void)
 #ifdef __USE_GLOBAL_SNAPSHOT__
             ClusterMonPID == 0 &&
 #endif
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
             AuditLoggerPID == 0 && 
 #endif
             WalReceiverPID == 0 &&
@@ -4385,7 +4385,7 @@ PostmasterStateMachine(void)
             Assert(ClusterMonPID == 0);
 #endif
 
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
             Assert(AuditLoggerPID == 0);
 #endif
             Assert(StartupPID == 0);
@@ -4614,7 +4614,7 @@ TerminateChildren(int signal)
         signal_child(PgArchPID, signal);
     if (PgStatPID != 0)
         signal_child(PgStatPID, signal);
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
     if (AuditLoggerPID != 0)
     {
         ereport(LOG,
@@ -5640,7 +5640,7 @@ SubPostmasterMain(int argc, char *argv[])
 
         StartBackgroundWorker();
     }
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
     if (strcmp(argv[1], "--forkalog") == 0)
     {
         /* Restore basic shared memory pointers */
@@ -5819,7 +5819,7 @@ sigusr1_handler(SIGNAL_ARGS)
         signal_child(SysLoggerPID, SIGUSR1);
     }
 
-#ifdef __AUDIT__
+#ifdef __AUDITXZ__
     if (CheckPostmasterSignal(PMSIGNAL_ROTATE_AUDIT_LOGFILE) &&
         AuditLoggerPID != 0)
     {
@@ -5835,7 +5835,7 @@ sigusr1_handler(SIGNAL_ARGS)
     }
 #endif
 
-#ifdef __AUDIT_FGA__
+#ifdef __AUDIT_FGAXZ__
     if (CheckPostmasterSignal(PMSIGNAL_WAKEN_AUDIT_FGA_TRIGGER) &&
         AuditFgaBgworkerPID != 0)
     {
@@ -6486,7 +6486,7 @@ do_start_bgworker(RegisteredBgWorker *rw)
             ShmemBackendArrayAdd(rw->rw_backend);
 #endif
 
-#ifdef __AUDIT_FGA__
+#ifdef __AUDIT_FGAXZ__
             /*
               * record audit fga bgwriter
                     */
