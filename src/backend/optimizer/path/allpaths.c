@@ -942,15 +942,6 @@ set_foreign_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
 
 		/* update distribution info */
 		set_scanpath_distribution(root, rel, pathnode);
-		if (rel->baserestrictinfo)
-		{
-			ListCell *lc;
-			foreach (lc, rel->baserestrictinfo)
-			{
-				RestrictInfo *ri = (RestrictInfo *) lfirst(lc);
-				restrict_distribution(root, ri, pathnode);
-			}
-		}
 	}    
 #endif
 }
