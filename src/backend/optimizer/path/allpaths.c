@@ -942,6 +942,18 @@ set_foreign_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
 
 		/* update distribution info */
 		set_scanpath_distribution(root, rel, pathnode);
+
+		/* Set also for partial paths */
+        	if(rel->partial_pathlist != NIL) {
+            		pathnode = lfirst(rel->partial_pathlist->head); 
+            		pathnode->startup_cost = 100;
+            		pathnode->total_cost = pathnode->startup_cost + rel->rows * .001;
+            		pathnode->rows = rel->rows * factor;
+
+            		/* update distribution info */ 
+            		set_scanpath_distribution(root, rel, pathnode);      
+        	}
+
 	}    
 #endif
 }
