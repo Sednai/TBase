@@ -910,35 +910,6 @@ set_foreign_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
 		 */
 		pathnode = lfirst(rel->pathlist->head);
 		Assert(pathnode);
-	
-		/*
-		 * Unfortunately, if we are on the coordinator, we do not have
-		 * a good way of estimating based on the data nodes, unless
-		 * we would send down a new special message to the data nodes to
-		 * get required info, which would slow down planning (but we
-		 * may wish to make that configurable in the future).
-		 * For now, do our own estimating. 
-		 */
-		switch (list_length(rel->baserestrictinfo))
-		{
-			case 0:
-				factor = 1.0;
-				break;
-			case 1:
-				factor = .03;
-				break;
-			case 2:
-				factor = .001;
-				break;
-			default:
-				factor = .0001;
-				break;
-		}
-		
-			
-		pathnode->startup_cost = 100;
-		pathnode->total_cost = pathnode->startup_cost + rel->rows * .001;
-		pathnode->rows = rel->rows * factor;
 
 		/* update distribution info */
 		set_scanpath_distribution(root, rel, pathnode);
@@ -946,9 +917,6 @@ set_foreign_pathlist(PlannerInfo *root, RelOptInfo *rel, RangeTblEntry *rte)
 		/* Set also for partial paths */
         	if(rel->partial_pathlist != NIL) {
             		pathnode = lfirst(rel->partial_pathlist->head); 
-            		pathnode->startup_cost = 100;
-            		pathnode->total_cost = pathnode->startup_cost + rel->rows * .001;
-            		pathnode->rows = rel->rows * factor;
 
             		/* update distribution info */ 
             		set_scanpath_distribution(root, rel, pathnode);      
