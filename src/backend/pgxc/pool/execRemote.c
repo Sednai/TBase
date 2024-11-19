@@ -10471,7 +10471,7 @@ ExecInitRemoteSubplan(RemoteSubplan *node, EState *estate, int eflags)
 #ifdef __AUDIT__
             rstmt.queryString = NULL;
             rstmt.parseTree = NULL;
-			elog_node_display(DEBUG5, "SendPlanMessage", &rstmt, Debug_pretty_print);
+	    //elog_node_display(DEBUG5, "SendPlanMessage", &rstmt, Debug_pretty_print);
 #endif
         }
         PG_CATCH();
