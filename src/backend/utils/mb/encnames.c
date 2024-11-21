@@ -414,7 +414,7 @@ const pg_enc2gettext pg_enc2gettext_tbl[] =
  */
 static const char *const pg_enc2icu_tbl[] =
 {
-    NULL,                        /* PG_SQL_ASCII */
+    "US-ASCII",                        /* PG_SQL_ASCII */
     "EUC-JP",                    /* PG_EUC_JP */
     "EUC-CN",                    /* PG_EUC_CN */
     "EUC-KR",                    /* PG_EUC_KR */
@@ -469,6 +469,7 @@ get_encoding_name_for_icu(int encoding)
 		            return NULL;
 	        return pg_enc2icu_tbl[encoding];
 }
+
 #endif                            /* not FRONTEND */
 
 
