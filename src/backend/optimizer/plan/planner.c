@@ -626,7 +626,8 @@ subquery_planner(PlannerGlobal *glob, Query *parse,
     bool recursiveOk = true;
 
 #ifndef XZ
-#ifdef XCP
+//#ifdef XCP
+#ifdef 0
     /* XL currently does not support DML in subqueries. */
     if ((parse->commandType != CMD_SELECT) &&
         ((parent_root ? parent_root->query_level + 1 : 1) > 1))
