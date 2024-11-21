@@ -12253,10 +12253,10 @@ ExecDirectStmt: EXECUTE DIRECT ON pgxcnodes DirectStmt
 					n->query = $5;
 					$$ = (Node *)n;
 
-					if (!superuser() && !mls_user())
-						ereport(ERROR,
-						       (errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
-						        errmsg("must be superuser to use EXECUTE DIRECT")));
+				//	if (!superuser() && !mls_user())
+				//		ereport(ERROR,
+				//		       (errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
+				//		        errmsg("must be superuser to use EXECUTE DIRECT")));
 				}
 		;
 
