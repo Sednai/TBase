@@ -654,7 +654,7 @@ fmgr_security_definer(PG_FUNCTION_ARGS)
                 n->val.val.str = username;
                 n->location = -1;
 
-                SetPGVariable("session_authorization", list_make1(n), false);
+                //SetPGVariable("session_authorization", list_make1(n), false);
 
                 //PoolManagerSetCommand(NULL, POOL_SET_COMMAND_ALL, POOL_CMD_GLOBAL_SET, cmd);
             }
@@ -736,7 +736,7 @@ fmgr_security_definer(PG_FUNCTION_ARGS)
                     n->val.val.str = username;
                     n->location = -1;
 
-                    SetPGVariable("session_authorization", list_make1(n), false);
+                    //SetPGVariable("session_authorization", list_make1(n), false);
 
                     //PoolManagerSetCommand(NULL, POOL_SET_COMMAND_ALL, POOL_CMD_GLOBAL_SET, cmd);
                 }
@@ -776,7 +776,7 @@ fmgr_security_definer(PG_FUNCTION_ARGS)
                 n->val.val.str = username;
                 n->location = -1;
 
-                SetPGVariable("session_authorization", list_make1(n), false);
+                //SetPGVariable("session_authorization", list_make1(n), false);
 
                 //PoolManagerSetCommand(NULL, POOL_SET_COMMAND_ALL, POOL_CMD_GLOBAL_SET, cmd);
             }
