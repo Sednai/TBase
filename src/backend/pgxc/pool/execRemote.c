@@ -9818,6 +9818,7 @@ determine_param_types(Plan *plan,  struct find_params_context *context)
                 return true;
             break;
 
+	case T_ForeignScan:
         case T_SeqScan:
         case T_SampleScan:
         case T_CteScan:
