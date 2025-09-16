@@ -2128,7 +2128,7 @@ _SPI_execute_plan(SPIPlanPtr plan, ParamListInfo paramLI,
          * In the default non-read-only case, get a new snapshot, replacing
          * any that we pushed in a previous cycle.
          */
-        if (snapshot == InvalidSnapshot && !read_only)
+	if (snapshot == InvalidSnapshot || !GetActiveSnapshot_uniform())
         {
             if (pushed_active_snap)
                 PopActiveSnapshot();

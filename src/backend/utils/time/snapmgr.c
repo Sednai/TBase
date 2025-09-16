@@ -1039,6 +1039,24 @@ GetActiveSnapshot(void)
 }
 
 /*
+ *  GetActiveSnapshot_uniform
+ *     Return the topmost snapshot in the Active stack regardless if run on Coordinator or Datanode.
+ */
+Snapshot
+GetActiveSnapshot_uniform(void)
+{
+#ifdef PGXC
+ /*
+  *  Check if topmost snapshot is null or not,
+  *  if it is, a new one will be taken from GTM.
+  */
+    if (!ActiveSnapshot)
+		            return NULL;
+#endif
+   return ActiveSnapshot->as_snap;
+}
+
+/*
  * ActiveSnapshotSet
  *        Return whether there is at least one snapshot in the Active stack
  */

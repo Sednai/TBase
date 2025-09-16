@@ -100,6 +100,7 @@ extern int GetActiveSnapshotLevel(void);
 extern void SetActiveSnapshotLevel(int level);
 extern void PopActiveSnapshot(void);
 extern Snapshot GetActiveSnapshot(void);
+extern Snapshot GetActiveSnapshot_uniform(void);
 extern bool ActiveSnapshotSet(void);
 
 extern Snapshot RegisterSnapshot(Snapshot snapshot);

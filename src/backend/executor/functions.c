@@ -1164,7 +1164,7 @@ fmgr_sql(PG_FUNCTION_ARGS)
              * visible.  Take a new snapshot if we don't have one yet,
              * otherwise just bump the command ID in the existing snapshot.
              */
-            if (!fcache->readonly_func)
+	   if (!fcache->readonly_func)
             {
                 CommandCounterIncrement();
                 if (!pushed_snapshot)
@@ -1175,7 +1175,16 @@ fmgr_sql(PG_FUNCTION_ARGS)
                 else
                     UpdateActiveSnapshotCommandId();
             }
-
+	    if(!GetActiveSnapshot_uniform())
+	    {
+	        if (!pushed_snapshot)
+                {
+                    PushActiveSnapshot(GetTransactionSnapshot());
+                    pushed_snapshot = true;
+                }
+                else
+                    UpdateActiveSnapshotCommandId();
+	    }
             postquel_start(es, fcache);
         }
         else if (!fcache->readonly_func && !pushed_snapshot)
