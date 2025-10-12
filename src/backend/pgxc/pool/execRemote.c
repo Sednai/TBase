@@ -5860,8 +5860,13 @@ pgxc_node_remote_abort(TranscationType txn_type, bool need_release_handle)
             g_twophase_state.response_operation = REMOTE_ABORT;
         }
 #endif
-        /* Receive responses */
-        result = pgxc_node_receive_responses(conn_count, connections, NULL, &combiner);
+        /* Receive responses.
+         * We might be already in the signal handler,
+         * if nodes do not respond we are in the deadlock, so timeout then. */
+        struct timeval timeout;
+        timeout.tv_sec            = 2;
+        timeout.tv_usec           = 0;
+        result = pgxc_node_receive_responses(conn_count, connections, &timeout, &combiner);
         if (result)
         {
             elog(LOG, "pgxc_node_remote_abort pgxc_node_receive_responses of ROLLBACK failed");
