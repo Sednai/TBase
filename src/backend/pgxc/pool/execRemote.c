@@ -5867,6 +5867,7 @@ pgxc_node_remote_abort(TranscationType txn_type, bool need_release_handle)
         timeout.tv_sec            = 2;
         timeout.tv_usec           = 0;
         result = pgxc_node_receive_responses(conn_count, connections, &timeout, &combiner);
+	//result = pgxc_node_receive_responses(conn_count, connections, NULL, &combiner);
         if (result)
         {
             elog(LOG, "pgxc_node_remote_abort pgxc_node_receive_responses of ROLLBACK failed");
