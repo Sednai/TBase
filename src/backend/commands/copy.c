@@ -3160,7 +3160,9 @@ CopyFrom(CopyState cstate)
                       1,        /* dummy rangetable index */
                       NULL,
                       0);
-
+#ifdef XZ
+if(IS_PGXC_DATANODE)
+#endif
     ExecOpenIndices(resultRelInfo, false);
 
     estate->es_result_relations = resultRelInfo;
@@ -3996,6 +3998,9 @@ readnextline:
             partrel = resultRelInfo->part_relinfo[j];
             if(partrel)
             {
+#ifdef XZ
+if(IS_PGXC_DATANODE)
+#endif
                 ExecCloseIndices(partrel);
                 heap_close(partrel->ri_RelationDesc, RowExclusiveLock);
             }
@@ -4003,6 +4008,9 @@ readnextline:
     }
 #endif
 
+#ifdef XZ
+if(IS_PGXC_DATANODE)
+#endif
     ExecCloseIndices(resultRelInfo);
 
     /* Close all the partitioned tables, leaf partitions, and their indices */
